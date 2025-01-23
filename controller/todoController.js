@@ -19,20 +19,20 @@ const load = async (req, res) => {
 const create = async (req, res) => {
   try {
     const userId = req.params.id;
+    const { content } = req.body;
     if (!userId) {
-      return res.status(401).json({
-        message: "User ID is required",
-      });
+      return res.status(401).json({ message: "User ID is required" });
     }
-    const data = await createTodo(req.body);
-    return res.send(data);
+    if (!content) {
+      return res.status(400).json({ message: "Content is required" });
+    }
+    const data = await createTodo(userId, content);
+    return res.status(201).json({ success: true, data });
   } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      message: "Server Error",
-    });
+    console.error(error);
+    return res.status(500).json({ message: "Server Error" });
   }
-}
+};
 const edit = async (req, res) => {
   try {
     const todoId = req.params.id;

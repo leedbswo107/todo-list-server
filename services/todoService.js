@@ -1,23 +1,23 @@
 const Todo = require('../models/Todo');
 
 class TodoService {
-  async getTodoList(author) {
+  async getTodoList(userId) {
     try {
-      const list = await Todo.find({ author });
+      const list = await Todo.find({ author: userId });
       return {
-        success: true,
-        data: list,
+        list,
       };
     } catch (error) {
       console.log(error);
     }
   }
-  async createTodo(userId, content) {
+  async createTodo(author, content) {
     try {
-      await Todo.create({ userId, content });
-      return { success: true };
+      const todo = await Todo.create({ author, content });
+      return { success: true, todo }; // 생성된 데이터 반환
     } catch (error) {
-      console.log(error);
+      console.error("Error creating todo:", error);
+      throw error; // 컨트롤러에서 에러 처리
     }
   }
   async editTodo(id, content) {

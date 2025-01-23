@@ -5,10 +5,11 @@ const {
   register,
   login,
   logout,
+  checkAuth
 } = require("../controller/authController");
 
 router.post("/auth/register", register);
 router.post("/auth/login", login);
 router.post("/auth/logout", logout);
-
+router.get("/auth/isLoggedIn", checkAuth);
 module.exports = router;

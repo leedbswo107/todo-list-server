@@ -97,8 +97,21 @@ const logout = (req, res) => {
   });
   res.status(200).json({ message: "Logged out" });
 };
+const checkAuth = (req, res) => {
+  const token = req.cookies.token;
+  if (!token) {
+    return res.status(401).json({ isLoggedIn: false });
+  }
+  try {
+    jwt.verify(token, "your_jwt_secret");
+    res.json({ isLoggedIn: true });
+  } catch (error) {
+    res.status(401).json({ isLoggedIn: false });
+  }
+};
 module.exports = {
   register,
   login,
   logout,
+  checkAuth
 };

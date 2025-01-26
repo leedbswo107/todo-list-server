@@ -98,13 +98,16 @@ const logout = (req, res) => {
   res.status(200).json({ message: "Logged out" });
 };
 const checkAuth = (req, res) => {
-  const token = req.cookies.token;
+  const { token } = req.cookies;
   if (!token) {
     return res.status(401).json({ isLoggedIn: false });
   }
   try {
-    jwt.verify(token, "your_jwt_secret");
-    res.json({ isLoggedIn: true });
+    jwt.verify(token, "your_jwt_secret", {}, (err, info) => {
+      if (err) throw err;
+      console.log('유저의 정보는??? ', info);
+      res.json(info);
+    });
   } catch (error) {
     res.status(401).json({ isLoggedIn: false });
   }

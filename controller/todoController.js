@@ -37,7 +37,7 @@ const edit = async (req, res) => {
   try {
     const todoId = req.params.id;
     const { content } = req.body;
-    if (!userId) {
+    if (!todoId) {
       return res.status(401).json({
         message: "User ID is required",
       });
